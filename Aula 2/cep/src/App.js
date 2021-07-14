@@ -1,25 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react';
+class App extends React.Component{
+  state = {
+    cep: {}
+  }
+  handleTextChange(e){
+    fetch(`https://viacep.com.br/ws/${e.target.value}/json/`)
+    .then(res => res.json())
+    .then(res => {
+      this.setState({
+        cep: res
+      })
+    })
+  }
+  render(){
+    return (
+      <div>
+        <strong> Olá, {this.props.name}</strong>
+        <div>
+          Digite o cep: <input type="text" onChange={this.handleTextChange.bind(this)}></input>
+          {Object.entries(this.state.cep).map((values, key) => (
+            <h2 key={key}><strong>{values[0]}:</strong>{values[1]}</h2>
+          ))}
+        </div>
+      </div>
+    )
+  }
 }
-
 export default App;
